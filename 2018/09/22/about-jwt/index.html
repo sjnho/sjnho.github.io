@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>about-token | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="安全,网络," />
+  
+
+  <meta name="description" content="关于JWT前文公司一直采用JWT作为Authorization认证的方案,是前期同事选择的方案。近期在实际使用过程发现，Base64解码能直接将Token中的信息解出来，让我不禁发出疑问，这样的机制不是不安全吗？为什么会大行其道呢？在去jwt.io一番了解后，终于知道了JWT的结构,跟我之前的想法不一样。 ###正文JWT全名JsonWebToken,是一种公开的行业标准RFC 7519,用于双方">
+<meta name="keywords" content="安全,网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="about-token">
+<meta property="og:url" content="http://yoursite.com/2018/09/22/about-jwt/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="关于JWT前文公司一直采用JWT作为Authorization认证的方案,是前期同事选择的方案。近期在实际使用过程发现，Base64解码能直接将Token中的信息解出来，让我不禁发出疑问，这样的机制不是不安全吗？为什么会大行其道呢？在去jwt.io一番了解后，终于知道了JWT的结构,跟我之前的想法不一样。 ###正文JWT全名JsonWebToken,是一种公开的行业标准RFC 7519,用于双方">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-22T14:44:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="about-token">
+<meta name="twitter:description" content="关于JWT前文公司一直采用JWT作为Authorization认证的方案,是前期同事选择的方案。近期在实际使用过程发现，Base64解码能直接将Token中的信息解出来，让我不禁发出疑问，这样的机制不是不安全吗？为什么会大行其道呢？在去jwt.io一番了解后，终于知道了JWT的结构,跟我之前的想法不一样。 ###正文JWT全名JsonWebToken,是一种公开的行业标准RFC 7519,用于双方">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-about-jwt" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">about-token</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.09.22</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="关于JWT"><a href="#关于JWT" class="headerlink" title="关于JWT"></a>关于JWT</h2><h3 id="前文"><a href="#前文" class="headerlink" title="前文"></a>前文</h3><p>公司一直采用JWT作为Authorization认证的方案,是前期同事选择的方案。近期在实际使用过程发现，Base64解码能直接将Token中的信息解出来，让我不禁发出疑问，这样的机制不是不安全吗？为什么会大行其道呢？在去jwt.io一番了解后，终于知道了JWT的结构,跟我之前的想法不一样。</p>
+<p>###正文<br>JWT全名JsonWebToken,是一种公开的行业标准<a href="https://tools.ietf.org/html/rfc7519" target="_blank" rel="noopener">RFC 7519</a>,用于双方安全地传递信息（英文原文：JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.）<br>它主要分为3个部分Header 头部 Payload 负载 Signature 签名，使用.符号进行分割。其中header一般是 <code>{ &quot;alg&quot;: &quot;HS256&quot;, &quot;typ&quot;: &quot;JWT&quot;}</code>带了加密的算法和类型的信息,然后使用Base64Url编码为第一部分,然后Payload就是token中存储数据的部分，有一些已被使用的的字段如”iss”,”iat”。然后自己的数据举个例子<code>{&quot;sub&quot;: &quot;1234567890&quot;,&quot;name&quot;: &quot;John Doe&quot;,&quot;admin&quot;: true}</code>,同样被Base64编码后作为第2部分，然后这一串字符串(Header.Payload)再使用声明的加密方式生成Signature作为第三部分，完整的一个JWT就是这样<br>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.<br>eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.<br>SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>从上文中的介绍中可以看出，前面2部分其实就只是用Base64进行编码产生的，所以毫无疑问能被解出来，但是因为第三部分是实用rsa加密，一般来说难以破解，所以没有什么伪造Token的可能性，但是因为数据不够安全,所以不能像以前cookie或者session方案中将用户信息这些存进去。而且还有一个缺点因为JWT在服务端没有状态，所以我可以从浏览器控制台拿出一个token直接来请求api。<br>所以我觉得JWT更适用于一次性的命令认证，颁发一个有效期极短的JWT，即使暴露了危险也很小，由于每次操作都会生成新的JWT，因此也没必要保存JWT，真正实现无状态。</p>
+<p>###后言<br>原来我以为Token里带的信息是完全加密的，然后做的鉴权也是根据Payload里的字段做的校验，后来发现base64能解密，我的鉴权代码不是没有用了。经过理解了JWT的完整结构，就算别人能伪造Payload中的所有的数据，但是由于不知道加密方式，导致Signature无法被解出，所以相对而言，鉴权还有有效的= =。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
