@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Async Vs Generator | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Node.js," />
+  
+
+  <meta name="description" content="Async  VS  Generator前文Async函数是ES2017中引入的标准，在Node.js于7.6默认支持，不再需要使用–harmony参数。而Generator函数，则是在ES2015中引入，使JavaScript函数的异步进入了新的阶段，但是经过一定资料查询，笔者发现async函数其实就是Generator函数的语法糖。笔者工作的项目经历了从Promise到Co+Generator">
+<meta name="keywords" content="Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Async Vs Generator">
+<meta property="og:url" content="http://yoursite.com/2019/01/27/Async-Vs-Generator/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="Async  VS  Generator前文Async函数是ES2017中引入的标准，在Node.js于7.6默认支持，不再需要使用–harmony参数。而Generator函数，则是在ES2015中引入，使JavaScript函数的异步进入了新的阶段，但是经过一定资料查询，笔者发现async函数其实就是Generator函数的语法糖。笔者工作的项目经历了从Promise到Co+Generator">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-01-27T08:24:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Async Vs Generator">
+<meta name="twitter:description" content="Async  VS  Generator前文Async函数是ES2017中引入的标准，在Node.js于7.6默认支持，不再需要使用–harmony参数。而Generator函数，则是在ES2015中引入，使JavaScript函数的异步进入了新的阶段，但是经过一定资料查询，笔者发现async函数其实就是Generator函数的语法糖。笔者工作的项目经历了从Promise到Co+Generator">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Async-Vs-Generator" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Async Vs Generator</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.01.27</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="Async-VS-Generator"><a href="#Async-VS-Generator" class="headerlink" title="Async  VS  Generator"></a>Async  VS  Generator</h2><h3 id="前文"><a href="#前文" class="headerlink" title="前文"></a>前文</h3><p>Async函数是ES2017中引入的标准，在Node.js于7.6默认支持，不再需要使用–harmony参数。而Generator函数，则是在ES2015中引入，使JavaScript函数的异步进入了新的阶段，但是经过一定资料查询，笔者发现async函数其实就是Generator函数的语法糖。笔者工作的项目经历了从Promise到Co+Generator到Async/Await的转变。接下来就从实际代码中讲一讲感受到的这2者的区别。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>首先，最明显的区别就是一个的两者语法的区别，async就是将*替换了，await则是替换了yield。然后就是另一个笔者认为最大的区别，async函数默认返回的是一个Promise,函数中的代码是会被执行的，但是Generator函数是不会自动执行的，需要一个自动执行机制，普遍的方案就是著名的co框架，将Generator函数传入co函数，就会自动执行。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const co = require('co')</span><br><span class="line">co(<span class="name">gen</span>)</span><br></pre></td></tr></table></figure>
+<p>但另外算是用co包装后也跟async存在差异。比如下面的代码，没有yield</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delay</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,  reject</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'3333'</span>)</span><br><span class="line">      resolve(<span class="number">1</span>)</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> x = delay()</span><br><span class="line">    <span class="keyword">return</span> x </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> x =  gen2()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'gen'</span>,x)</span><br><span class="line">  <span class="keyword">return</span> x</span><br><span class="line">&#125;</span><br><span class="line">co(gen())</span><br></pre></td></tr></table></figure>
+<p>会发现代码并不会执行，但是async不一样，忘了加await，还是会异步执行的，笔者曾就遇到过忘记加yield的bug，导致代码中断。这个区别就是yield和await的这2个操作符意义的区别。最后，既然提到co框架，还有个区别，就是在co框架中检查了yield后面跟的对象的类型,没有通过检查时会丢出<br><code>You may only yield a function, promise, generator, array, or object, but the following object was passed: &quot;null&quot;</code>的Error,但是async／await就没有这种困扰。</p>
+<h3 id="后文"><a href="#后文" class="headerlink" title="后文"></a>后文</h3><p>JavaScript的异步控制从Callback,到Promise,再到Generator，Async／Await，变得越来越容易理解，但是最后的实质都是一样的。只能说内核开发者们好强啊，让更多的人拥抱JS吧！！！</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
