@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>instanceof的实现原理然后展开去 | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JavaScript," />
+  
+
+  <meta name="description" content="instanceof 是JavaScript中的一个运算符，字面意思就是判断一个势力是否属于某种类型， 1234const Person = function()&amp;#123;&amp;#125;let sjn = new Person()sjn instanceof Person //true 这个操作符的实现原理网上已有先驱整理出一段代码，我就借花献佛。 1234567891011function in">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="instanceof的实现原理然后展开去">
+<meta property="og:url" content="http://yoursite.com/2019/03/02/instanceof的实现/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="instanceof 是JavaScript中的一个运算符，字面意思就是判断一个势力是否属于某种类型， 1234const Person = function()&amp;#123;&amp;#125;let sjn = new Person()sjn instanceof Person //true 这个操作符的实现原理网上已有先驱整理出一段代码，我就借花献佛。 1234567891011function in">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-02T12:30:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="instanceof的实现原理然后展开去">
+<meta name="twitter:description" content="instanceof 是JavaScript中的一个运算符，字面意思就是判断一个势力是否属于某种类型， 1234const Person = function()&amp;#123;&amp;#125;let sjn = new Person()sjn instanceof Person //true 这个操作符的实现原理网上已有先驱整理出一段代码，我就借花献佛。 1234567891011function in">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-instanceof的实现" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">instanceof的实现原理然后展开去</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.03.02</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>instanceof 是JavaScript中的一个运算符，字面意思就是判断一个势力是否属于某种类型，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Person = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> sjn = <span class="keyword">new</span> Person()</span><br><span class="line">sjn <span class="keyword">instanceof</span> Person <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<p>这个操作符的实现原理网上已有先驱整理出一段代码，我就借花献佛。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">instanceOf</span>(<span class="params">left,right</span>)</span>&#123;</span><br><span class="line"><span class="keyword">let</span> rightProto = right.prototype</span><br><span class="line"><span class="keyword">let</span> leftValue = left.__proto__</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(leftValue === <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        <span class="keyword">if</span>(leftValue === rightProto)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        leftValue = leftValue.__proto__</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这也符合MDN中对instanceof的定义：<strong>instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置</strong><br>上述代码为什么就是这句定义呢,那么就涉及到<code>__proto__</code>属性。<br><code>__proto__</code>是在Object.prototype上的属性，暴露了通过它访问的对象的内部[[Prototype]]<br>哇。这么多proto，我都有点晕了呢。<br>我们来举个例子。<br><code>let str = new String(&quot;test&quot;)</code><br>那么<code>str.__proto__</code>指向内部属性[[Prototype]]也就是String.prototype,是不是很简单，<br>但是，使用<code>__proto__</code>是有争议的，也不鼓励使用它。因为它从来没有被包括在EcmaScript语言规范中，虽然现代浏览器都实现了它，但也许会在未来的某个时间停止支持。建议使用Object.getPrototypeOf()来替代。<br>另外，直接修改<code>obj.__proto__</code>是一种对性能影响非常严重的操作,因为会影响到所有继承来自[[Prototype]]的对象。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
