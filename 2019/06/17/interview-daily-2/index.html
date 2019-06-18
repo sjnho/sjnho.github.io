@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>怪异模式和标准模式 | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="HTML," />
+  
+
+  <meta name="description" content="来源在很久以前的网络上，页面通常有两种版本：为网景（Netscape）的 Navigator准备的版本以及为微软（Microsoft）的 Internet Explorer准备的版本。当 W3C 创立网络标准后，为了不破坏当时既有的网站，浏览器不能直接起用这些标准。因此，浏览器采用了两种模式，用以把能符合新规范的网站和老旧网站区分开。 目前浏览器的排版引擎有三种模式：怪异模式（Quirks mod">
+<meta name="keywords" content="HTML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怪异模式和标准模式">
+<meta property="og:url" content="http://yoursite.com/2019/06/17/interview-daily-2/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="来源在很久以前的网络上，页面通常有两种版本：为网景（Netscape）的 Navigator准备的版本以及为微软（Microsoft）的 Internet Explorer准备的版本。当 W3C 创立网络标准后，为了不破坏当时既有的网站，浏览器不能直接起用这些标准。因此，浏览器采用了两种模式，用以把能符合新规范的网站和老旧网站区分开。 目前浏览器的排版引擎有三种模式：怪异模式（Quirks mod">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-18T13:41:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怪异模式和标准模式">
+<meta name="twitter:description" content="来源在很久以前的网络上，页面通常有两种版本：为网景（Netscape）的 Navigator准备的版本以及为微软（Microsoft）的 Internet Explorer准备的版本。当 W3C 创立网络标准后，为了不破坏当时既有的网站，浏览器不能直接起用这些标准。因此，浏览器采用了两种模式，用以把能符合新规范的网站和老旧网站区分开。 目前浏览器的排版引擎有三种模式：怪异模式（Quirks mod">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-interview-daily-2" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">怪异模式和标准模式</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.06.17</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/每天一道面试题/">每天一道面试题</a>
+  </span>
+
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h2><p>在很久以前的网络上，页面通常有两种版本：为网景（Netscape）的 Navigator准备的版本以及为微软（Microsoft）的 Internet Explorer准备的版本。当 W3C 创立网络标准后，为了不破坏当时既有的网站，浏览器不能直接起用这些标准。因此，浏览器采用了两种模式，用以把能符合新规范的网站和老旧网站区分开。</p>
+<p>目前浏览器的排版引擎有三种模式：怪异模式（Quirks mode）、接近标准模式（Almost standards mode）、以及标准模式（Standards mode）。在怪异模式下，排版会模拟 Navigator 4 与 Internet Explorer 5 的非标准行为。为了支持在网络标准被广泛采用前，就已经建好的网站，这么做是必要的。在标准模式下，行为即（但愿如此）由 HTML 与 CSS 的规范描述的行为。在接近标准模式下，只有少数的怪异行为被实现。</p>
+<h2 id="怪异模式有哪些怪异的行为？"><a href="#怪异模式有哪些怪异的行为？" class="headerlink" title="怪异模式有哪些怪异的行为？"></a>怪异模式有哪些怪异的行为？</h2><p>主要分为5类</p>
+<ul>
+<li>Miscellaneous &amp; Style</li>
+<li>Block and Inline layout</li>
+<li>Tables</li>
+<li>Frames</li>
+<li>HTML Parser</li>
+</ul>
+<p>具体可以看mdn上的详细信息 <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mozilla_quirks_mode_behavior" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Mozilla/Mozilla_quirks_mode_behavior</a></p>
+<h2 id="几乎标准模式有哪些怪异的行为？"><a href="#几乎标准模式有哪些怪异的行为？" class="headerlink" title="几乎标准模式有哪些怪异的行为？"></a>几乎标准模式有哪些怪异的行为？</h2><p>MDN上的说法：<br>inline boxes that have no non-whitespace text as a child and have no border, padding, or margin</p>
+<ul>
+<li>do not influence the size of the line box (that is, their line-height is ignored)</li>
+<li>do not get a height (e.g., for their background) larger than that of their descendants, even if their font size is larger (if they have no descendents, they are zero-height positioned at their baseline)</li>
+</ul>
+<p>粗浅的翻译一下。<br>内联盒子没有非空白文本作为子项，没有边框，填充或边距。</p>
+<ul>
+<li>无法影响line盒子的大小（也就是说，忽略它们的行高）</li>
+<li>即使它们的字体大小较大（如果它们没有后代，它们在他们基线处），也不会使其高度（例如，对于它们的背景）大于它们的后代的高度</li>
+</ul>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
