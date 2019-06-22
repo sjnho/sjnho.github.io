@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>请描述一下事件代理 | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JavaScript," />
+  
+
+  <meta name="description" content="开篇JavaScript事件代理，又名为事件委托，在浏览器环境里，dom树上发生，同一管理某一类型的事件。实现原理是用了事件冒泡的机制来实现的。那首先讲一下事件冒泡和事件捕获。 事件冒泡和事件捕获。事件冒泡和事件捕获是2个完全相反的概念，都是被提出用于解决页面中事件流（事件发生顺序）的问题。123&amp;lt;div id=&quot;outer&quot;&amp;gt;    &amp;lt;p id=&quot;inner&quot;&amp;gt;Click">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="请描述一下事件代理">
+<meta property="og:url" content="http://yoursite.com/2019/06/22/interview-dayily-4/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="开篇JavaScript事件代理，又名为事件委托，在浏览器环境里，dom树上发生，同一管理某一类型的事件。实现原理是用了事件冒泡的机制来实现的。那首先讲一下事件冒泡和事件捕获。 事件冒泡和事件捕获。事件冒泡和事件捕获是2个完全相反的概念，都是被提出用于解决页面中事件流（事件发生顺序）的问题。123&amp;lt;div id=&quot;outer&quot;&amp;gt;    &amp;lt;p id=&quot;inner&quot;&amp;gt;Click">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-22T11:50:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="请描述一下事件代理">
+<meta name="twitter:description" content="开篇JavaScript事件代理，又名为事件委托，在浏览器环境里，dom树上发生，同一管理某一类型的事件。实现原理是用了事件冒泡的机制来实现的。那首先讲一下事件冒泡和事件捕获。 事件冒泡和事件捕获。事件冒泡和事件捕获是2个完全相反的概念，都是被提出用于解决页面中事件流（事件发生顺序）的问题。123&amp;lt;div id=&quot;outer&quot;&amp;gt;    &amp;lt;p id=&quot;inner&quot;&amp;gt;Click">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-interview-dayily-4" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">请描述一下事件代理</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.06.22</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/每天一道面试题/">每天一道面试题</a>
+  </span>
+
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><p>JavaScript事件代理，又名为事件委托，在浏览器环境里，dom树上发生，同一管理某一类型的事件。实现原理是用了事件冒泡的机制来实现的。<br>那首先讲一下事件冒泡和事件捕获。</p>
+<h3 id="事件冒泡和事件捕获。"><a href="#事件冒泡和事件捕获。" class="headerlink" title="事件冒泡和事件捕获。"></a>事件冒泡和事件捕获。</h3><p>事件冒泡和事件捕获是2个完全相反的概念，都是被提出用于解决页面中事件流（事件发生顺序）的问题。<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">id</span>=<span class="string">"outer"</span>&gt;</span><br><span class="line">    &lt;p <span class="built_in">id</span>=<span class="string">"inner"</span>&gt;Click <span class="keyword">me</span>!&lt;/p&gt;</span><br><span class="line">&lt;/<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure></p>
+<p>举个例子，上述的dom结构下，当p被点击后。<br>事件冒泡是由最具体的元素开始，一直向上传播。知道document对象。所以例子中发生click事件的顺序是<br>p-&gt;div-&gt;body-&gt;html-&gt;document</p>
+<p>事件捕获则是由最外层开始。直到具体的元素。所以例子中的顺序就是document-&gt;html-&gt;body-&gt;div-&gt;p<br>“DOM2级事件”中规定的事件流同时支持了事件捕获阶段和事件冒泡阶段，想要开启事件捕获可以指定addEventListener方法中的第3个参数为true。</p>
+<h3 id="事件代理"><a href="#事件代理" class="headerlink" title="事件代理"></a>事件代理</h3><p>那么事件代理，其实就是使用事件冒泡的机制，将发生在具体的元素上的事件，统一到父级处理。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>4<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>5<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>如上面的代码，将事件注册在li上就需要注册5个。但是注册在ul上，然后处理，就只需一个监听器，从而实现了诸多好处，譬如可以方便的动态添加／删除元素，不需要还要在再为其修改事件绑定。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>这也是在查询事件代理相关资料时候，发现了原来React的事件系统，使用了事件委托，命名为SyntheticEvent（合成事件）。它并不会把事件处理函数直接绑定到真实的节点上，而是把所有事件绑定到结构的最外层，使用一个统一的事件监听器，这个事件监听器上维持了一个映射来保存所有组件内部的事件监听和处理函数。当组件挂载或卸载时，只是在这个统一的事件监听器上插入或删除一些对象；当事件发生时，首先被这个统一的事件监听器处理，然后在映射里找到真正的事件处理函数并调用。这样做简化了事件处理和回收机制，效率也有很大提升。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
