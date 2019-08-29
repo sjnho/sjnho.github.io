@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>JavaScript 中 this 是如何工作的？ | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="JavaScript," />
+  
+
+  <meta name="description" content="废话经历了一个非常紧急的迭代，加班加到怀疑人生，收拾心情，重新捡起blog，争取做一个更博小能手。 之前印象JS中this的工作原理，是自古以来的必考点。有一句经典的话，谁最终调用函数,this指向谁。这句话听起来好像很简单，但是结合各种场景，this分别是如何指向的呢？ ##具体场景 全局作用域123456// global scopefoo = &apos;abc&apos;;alert(foo); // abc">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 中 this 是如何工作的？">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/interview-daily-5/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="废话经历了一个非常紧急的迭代，加班加到怀疑人生，收拾心情，重新捡起blog，争取做一个更博小能手。 之前印象JS中this的工作原理，是自古以来的必考点。有一句经典的话，谁最终调用函数,this指向谁。这句话听起来好像很简单，但是结合各种场景，this分别是如何指向的呢？ ##具体场景 全局作用域123456// global scopefoo = &apos;abc&apos;;alert(foo); // abc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-29T01:05:23.518Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript 中 this 是如何工作的？">
+<meta name="twitter:description" content="废话经历了一个非常紧急的迭代，加班加到怀疑人生，收拾心情，重新捡起blog，争取做一个更博小能手。 之前印象JS中this的工作原理，是自古以来的必考点。有一句经典的话，谁最终调用函数,this指向谁。这句话听起来好像很简单，但是结合各种场景，this分别是如何指向的呢？ ##具体场景 全局作用域123456// global scopefoo = &apos;abc&apos;;alert(foo); // abc">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-interview-daily-5" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">JavaScript 中 this 是如何工作的？</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.06.16</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/每天一道面试题/">每天一道面试题</a>
+  </span>
+
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h3><p>经历了一个非常紧急的迭代，加班加到怀疑人生，收拾心情，重新捡起blog，争取做一个更博小能手。</p>
+<h2 id="之前印象"><a href="#之前印象" class="headerlink" title="之前印象"></a>之前印象</h2><p>JS中this的工作原理，是自古以来的必考点。有一句经典的话，谁最终调用函数,this指向谁。这句话听起来好像很简单，但是结合各种场景，this分别是如何指向的呢？</p>
+<p>##具体场景</p>
+<h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// global scope</span></span><br><span class="line">foo = <span class="string">'abc'</span>;</span><br><span class="line">alert<span class="comment">(foo)</span>; <span class="comment">// abc</span></span><br><span class="line"></span><br><span class="line">this.foo = <span class="string">'def'</span>;</span><br><span class="line">alert<span class="comment">(foo)</span>; <span class="comment">// def</span></span><br></pre></td></tr></table></figure>
+<p>在全局作用域/全局环境(global scope/global context)中，this指向的就是全局变量<br>在浏览器中指的就是window，在node.js中就是global。</p>
+<h3 id="函数中"><a href="#函数中" class="headerlink" title="函数中"></a>函数中</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> boat = &#123;</span><br><span class="line">    size: <span class="string">'normal'</span>,</span><br><span class="line">    boatInfo: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span> === boat);</span><br><span class="line">        alert(<span class="keyword">this</span>.size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">boat.boatInfo(); <span class="comment">// true, 'normal'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bigBoat = &#123;</span><br><span class="line">    size: <span class="string">'big'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">bigBoat.boatInfo = boat.boatInfo;</span><br><span class="line">bigBoat.boatInfo(); <span class="comment">// false, 'big'</span></span><br></pre></td></tr></table></figure>
+<p>从上述代码中可以看，同样是boatInfo()打印出来确实不同的值，这是因为在任何函数中，this的指向都不是静态的(static)，它总是在你调用一个函数，但尚未执行函数内部代码前被指定，是由调用函数的父作用域提供的，这就是那句经典的话的来源。<br>接着上面在深一级</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var boatInfo = bigBoat.boatInfo<span class="comment">;</span></span><br><span class="line">boatInfo()<span class="comment">;//false,undefined</span></span><br></pre></td></tr></table></figure>
+<p>这就是因为执行boatInfo函数的父作用域是全局，所以this指向了全局。</p>
+<h3 id="构造函数中"><a href="#构造函数中" class="headerlink" title="构造函数中"></a>构造函数中</h3><p>当使用new关键字去执行构造函数时，构造函数中的this指向的的就是新建的那个对象实例。</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var thisArg;</span><br><span class="line">function Ctor()&#123;</span><br><span class="line">    thisArg = this</span><br><span class="line">&#125;</span><br><span class="line">var<span class="built_in"> instance </span>=<span class="built_in"> new </span>Ctor()</span><br><span class="line">console.log(thisArg === instance) //true</span><br></pre></td></tr></table></figure>
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p>当使用es6箭头函数时，默认绑定外层第一个不是箭头函数的this，并且this一旦绑定，就不会被call，apply，bind改变。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">     foo:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.foo()<span class="regexp">//</span><span class="built_in">window</span>|<span class="built_in">global</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>this的指向判断可以遵循一个方法，在非箭头函数下，通过()左边的对象，如果是一个引用，那么this就指向该对象，如果没有，就指向全局，如果有箭头函数存在，就绑定了外层第一个不是箭头函数的this。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
