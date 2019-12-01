@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 
 
-  <html class="light page-category">
+  <html class="light page-post">
 
 
 <head>
   <meta charset="utf-8">
   
-  <title>category | sjn_hoho&#39;blog</title>
+  <title>Vue源码详解之Slot的实现.md | sjn_hoho&#39;blog</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="前端,Node.js,JavaScript" />
+    <meta name="keywords" content="Vue," />
   
 
-  <meta name="description" content="记下这些年">
-<meta property="og:type" content="website">
-<meta property="og:title" content="category">
-<meta property="og:url" content="http://yoursite.com/category/index.html">
+  <meta name="description" content="前言Vue是一款MVVM框架,渲染是通过一个被称之为compile的过程，将AST">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码详解之Slot的实现.md">
+<meta property="og:url" content="http://yoursite.com/2019/11/06/sourcecode-vue_slot/index.html">
 <meta property="og:site_name" content="sjn_hoho&#39;blog">
-<meta property="og:description" content="记下这些年">
+<meta property="og:description" content="前言Vue是一款MVVM框架,渲染是通过一个被称之为compile的过程，将AST">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-16T15:17:03.000Z">
+<meta property="og:updated_time" content="2019-11-09T04:46:44.557Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="category">
-<meta name="twitter:description" content="记下这些年">
+<meta name="twitter:title" content="Vue源码详解之Slot的实现.md">
+<meta name="twitter:description" content="前言Vue是一款MVVM框架,渲染是通过一个被称之为compile的过程，将AST">
 
   
 
@@ -58,17 +59,8 @@
     <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
   
 
-  <div class="content content-category">
-  <div class="page-header">
-
-  
-    <div class="breadcrumb">
-      <div class="location">分类</div>
-      <i class="icon-location"></i>
-    </div>
-  
-
-  
+  <div class="post-header CENTER">
+   
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
       <span class="toolbox-entry-text">盒子</span>
@@ -114,124 +106,65 @@
   </div>
 
 
+</div>
 
-  <div class="box-blog-info">
-    <a class="avatar" href="/">
-      <img src="/images/avatar.jpg" alt="" />
-    </a>
-    <div class="info">
-      <h3 class="name" style="font-family: calligraffittiregular">
-        单佳宁的博客
-      </h3>
-      <div class="slogan">
-        记下这些年
-      </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-sourcecode-vue_slot" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Vue源码详解之Slot的实现.md</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.11.06</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/源码阅读/">源码阅读</a>
+  </span>
+
+
+
+      
+
+      
+      
     </div>
-  </div>
+  </header>
 
-</div>
+  <div class="article-content">
+    
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Vue是一款MVVM框架,渲染是通过一个被称之为compile的过程，将AST</p>
 
-  <section class="category-box">
-  <div class="category-title">分类</div>
-  <div class="category-list">
-    
-      <a class="category-item" href="#每天一道面试题">
-        <span class="category-name">每天一道面试题</span>
-        <span class="category-size">( 5 )</span>
-      </a>
-    
-      <a class="category-item" href="#源码阅读">
-        <span class="category-name">源码阅读</span>
-        <span class="category-size">( 2 )</span>
-      </a>
     
   </div>
-</section>
 
-  <ul class="list-post"><li id="每天一道面试题" class="item-category-name item-title item-title-0">
-  <!--
-    <a href="" class="text-year">
-   -->
-    每天一道面试题
-    <span class="category-count">( 5 )</span>
-  <!--
-  </a>
-   -->
-</li>
-<li class="item-post item">
-  <span class="post-date">08-28</span>
-
-  
-  <a class="post-title" href="/2019/08/28/interview-daily-5/">JavaScript 中 this 是如何工作的？</a>
+</article>
 
 
-</li>
-<li class="item-post item">
-  <span class="post-date">06-22</span>
+   
 
-  
-  <a class="post-title" href="/2019/06/22/interview-dayily-4/">事件代理是什么？</a>
+   
 
 
-</li>
-<li class="item-post item">
-  <span class="post-date">06-18</span>
-
-  
-  <a class="post-title" href="/2019/06/18/interview-daily-3/">使用 data- 属性的好处是什么？</a>
 
 
-</li>
-<li class="item-post item">
-  <span class="post-date">06-17</span>
-
-  
-  <a class="post-title" href="/2019/06/17/interview-daily-2/">怪异模式和标准模式</a>
-
-
-</li>
-<li class="item-post item">
-  <span class="post-date">06-16</span>
-
-  
-  <a class="post-title" href="/2019/06/16/interview-daily-1/">DOCTYPE（文档类型）的作用是什么？</a>
-
-
-</li>
-<li id="源码阅读" class="item-category-name item-title item-title-1">
-  <!--
-    <a href="" class="text-year">
-   -->
-    源码阅读
-    <span class="category-count">( 2 )</span>
-  <!--
-  </a>
-   -->
-</li>
-<li class="item-post item">
-  <span class="post-date">11-06</span>
-
-  
-  <a class="post-title" href="/2019/11/06/sourcecode-vue_slot/">Vue源码详解之Slot的实现.md</a>
-
-
-</li>
-<li class="item-post item">
-  <span class="post-date">09-07</span>
-
-  
-  <a class="post-title" href="/2018/09/07/sourcecode-node_events/">我读源码之events</a>
-
-
-</li>
-</ul>
+   
+      <div class="git"></div>
+   
 </div>
-
-
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
-
 
 
 
@@ -287,6 +220,22 @@
 </div>
 
 
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
 
   
 

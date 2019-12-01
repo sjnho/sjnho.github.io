@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>我读源码之events.md | sjn_hoho&#39;blog</title>
+  <title>我读源码之events | sjn_hoho&#39;blog</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,23 +15,23 @@
     <meta name="keywords" content="Node.js," />
   
 
-  <meta name="description" content="##前言events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。 ####问题一：下面这段代码为什么不会死循环？ 1234567const EventEmitter = require(&apos;events&apos;);let emitter = new EventEmitte">
+  <meta name="description" content="前言events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。 问题一：下面这段代码为什么不会死循环？1234567const EventEmitter = require(&apos;events&apos;);let emitter = new EventEmitter();emi">
 <meta name="keywords" content="Node.js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我读源码之events.md">
-<meta property="og:url" content="http://yoursite.com/2018/09/07/Events-js源码解读/index.html">
+<meta property="og:title" content="我读源码之events">
+<meta property="og:url" content="http://yoursite.com/2018/09/07/sourcecode-node_events/index.html">
 <meta property="og:site_name" content="sjn_hoho&#39;blog">
-<meta property="og:description" content="##前言events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。 ####问题一：下面这段代码为什么不会死循环？ 1234567const EventEmitter = require(&apos;events&apos;);let emitter = new EventEmitte">
+<meta property="og:description" content="前言events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。 问题一：下面这段代码为什么不会死循环？1234567const EventEmitter = require(&apos;events&apos;);let emitter = new EventEmitter();emi">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-16T10:17:10.000Z">
+<meta property="og:updated_time" content="2019-11-06T14:02:59.917Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我读源码之events.md">
-<meta name="twitter:description" content="##前言events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。 ####问题一：下面这段代码为什么不会死循环？ 1234567const EventEmitter = require(&apos;events&apos;);let emitter = new EventEmitte">
+<meta name="twitter:title" content="我读源码之events">
+<meta name="twitter:description" content="前言events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。 问题一：下面这段代码为什么不会死循环？1234567const EventEmitter = require(&apos;events&apos;);let emitter = new EventEmitter();emi">
 
   
 
   
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/images/avatar.jpg">
   
 
   <link href="/css/styles.css?v=c114cben" rel="stylesheet">
@@ -112,9 +112,9 @@
 
 
 <div class="content content-post CENTER">
-   <article id="post-Events-js源码解读" class="article article-type-post" itemprop="blogPost">
+   <article id="post-sourcecode-node_events" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">我读源码之events.md</h1>
+    <h1 class="post-title">我读源码之events</h1>
 
     <div class="article-meta">
       <span>
@@ -130,6 +130,11 @@
       
 
       
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/源码阅读/">源码阅读</a>
+  </span>
+
 
 
       
@@ -141,12 +146,9 @@
 
   <div class="article-content">
     
-      <p>##前言<br>events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。</p>
-<p>####问题一：下面这段代码为什么不会死循环？</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EventEmitter = <span class="built_in">require</span>(<span class="string">'events'</span>);</span><br><span class="line"><span class="keyword">let</span> emitter = <span class="keyword">new</span> EventEmitter();</span><br><span class="line">emitter.on(<span class="string">'myEvent'</span>, <span class="function"><span class="keyword">function</span> <span class="title">sth</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  emitter.on(<span class="string">'myEvent'</span>, sth);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'hi'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">emitter.emit(<span class="string">'myEvent'</span>);</span><br></pre></td></tr></table></figure>
-<p>####问题二：event.once怎么实现的？</p>
-<p>##正文（<a href="https://github.com/nodejs/node/blob/master/lib/events.js" target="_blank" rel="noopener">源码地址</a>）</p>
-<p>构造函数中初始化了几个相关变量。</p>
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>events模块一直是Node.js源码解读界的“网红”，许多博客和文章珠玉在前，但看着别人的思路一步步来总是不过瘾，这次试着自己读一读。漫无目的的阅读很可能看过就忘，所以先提2个问题给自己。</p>
+<h4 id="问题一：下面这段代码为什么不会死循环？"><a href="#问题一：下面这段代码为什么不会死循环？" class="headerlink" title="问题一：下面这段代码为什么不会死循环？"></a>问题一：下面这段代码为什么不会死循环？</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EventEmitter = <span class="built_in">require</span>(<span class="string">'events'</span>);</span><br><span class="line"><span class="keyword">let</span> emitter = <span class="keyword">new</span> EventEmitter();</span><br><span class="line">emitter.on(<span class="string">'myEvent'</span>, <span class="function"><span class="keyword">function</span> <span class="title">sth</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  emitter.on(<span class="string">'myEvent'</span>, sth);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'hi'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">emitter.emit(<span class="string">'myEvent'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="问题二：event-once怎么实现的？"><a href="#问题二：event-once怎么实现的？" class="headerlink" title="问题二：event.once怎么实现的？"></a>问题二：event.once怎么实现的？</h4><h2 id="正文（源码地址）"><a href="#正文（源码地址）" class="headerlink" title="正文（源码地址）"></a>正文（<a href="https://github.com/nodejs/node/blob/master/lib/events.js" target="_blank" rel="noopener">源码地址</a>）</h2><p>构造函数中初始化了几个相关变量。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">EventEmitter.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._events === <span class="literal">undefined</span> ||</span><br><span class="line">      <span class="keyword">this</span>._events === <span class="built_in">Object</span>.getPrototypeOf(<span class="keyword">this</span>)._events) &#123;</span><br><span class="line">    <span class="keyword">this</span>._events = <span class="built_in">Object</span>.create(<span class="literal">null</span>);<span class="comment">//构造一个没有原型链的&#123;&#125;用于存储事件监听</span></span><br><span class="line">    <span class="keyword">this</span>._eventsCount = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._maxListeners = <span class="keyword">this</span>._maxListeners || <span class="literal">undefined</span>;<span class="comment">//最大监听者数量</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>在导出依赖时发现有一句<br><code>EventEmitter.EventEmitter = EventEmitter;</code><br>终于搞明白为啥经常看到一些库中的用法是<br><code>var eventEmitter = require(&#39;events&#39;).EventEmitter</code><br>原来是一样的，只是历史遗留问题。<br>然后是<code>on</code>方法，on的实质是一个<code>function(type,listener)</code><br>on方法源码也比较简单，处理了一些错误情况和可能引起的问题，最后将.events[type]的listener数组中加上新的listener，或者在没有的已存在的情况不创建数组直接赋值。值得注意是如果已存在的监听中有’newListener’的监听者，则需要先发送一个’newListener’事件。<br>接下来就是<code>emit</code>方法</p>
 <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">EventEmitter.prototype.emit = <span class="function"><span class="keyword">function</span> <span class="title">emit</span><span class="params">(type, <span class="rest_arg">...args</span>)</span> </span>&#123;</span><br><span class="line">  let doError = (type === <span class="string">'error'</span>);</span><br><span class="line">  <span class="keyword">const</span> events = <span class="keyword">this</span>._events;</span><br><span class="line">  <span class="keyword">if</span> (events !== <span class="literal">undefined</span>)</span><br><span class="line">    doError = (doError &amp;&amp; events.error === <span class="literal">undefined</span>);</span><br><span class="line">    <span class="comment">//是error事件，而且有对应的listener，为false</span></span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (!doError)<span class="comment">//不是error事件，但是没有listener,直接返回啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="comment">//错误处理，events里没有error的listener直接throw</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> handler = events[type];</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (handler === <span class="literal">undefined</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> handler === <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="comment">//只有一个监听器的情况下，直接调用，对应前面on的时候第一个直接赋值</span></span><br><span class="line">    Reflect.apply(handler, <span class="keyword">this</span>, args);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">//数组情况下，直接clone一个数组，循环处理</span></span><br><span class="line">    <span class="keyword">const</span> len = handler.length;</span><br><span class="line">    <span class="keyword">const</span> listeners = arrayClone(handler, len);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; ++i)</span><br><span class="line">      Reflect.apply(listeners[i], <span class="keyword">this</span>, args);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -154,7 +156,7 @@
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onceWrapper</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.fired) &#123;</span><br><span class="line">    <span class="keyword">this</span>.target.removeListener(<span class="keyword">this</span>.type, <span class="keyword">this</span>.wrapFn);</span><br><span class="line">    <span class="keyword">this</span>.fired = <span class="literal">true</span>;</span><br><span class="line">    Reflect.apply(<span class="keyword">this</span>.listener, <span class="keyword">this</span>.target, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_onceWrap</span>(<span class="params">target, <span class="keyword">type</span>, listener</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> state = &#123; fired: <span class="literal">false</span>, wrapFn: <span class="literal">undefined</span>, target, <span class="keyword">type</span>, listener &#125;;</span><br><span class="line">  <span class="keyword">var</span> wrapped = onceWrapper.bind(state);</span><br><span class="line">  wrapped.listener = listener;</span><br><span class="line">  state.wrapFn = wrapped;</span><br><span class="line">  <span class="keyword">return</span> wrapped;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EventEmitter.prototype.once = <span class="function"><span class="keyword">function</span> <span class="title">once</span>(<span class="params"><span class="keyword">type</span>, listener</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> listener !== <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> errors = lazyErrors();</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> errors.ERR_INVALID_ARG_TYPE(<span class="string">'listener'</span>, <span class="string">'Function'</span>, listener);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>.on(<span class="keyword">type</span>, _onceWrap(<span class="keyword">this</span>, <span class="keyword">type</span>, listener));</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>其实就是通过闭包实现了一个名为fired的flag的私有，事件第一次被触发时，先调用removeListener，然后在运行对应的操作函数，并将fired设为true，下次就再也无法触发了，而且因为remove了这个监听器，所以之前的闭包也被回收了。<br>在once中的removeListener又是怎么实现的呢？<br>算了，不贴源码了，感觉很简单，就是将events[‘type’]中对应删掉，Object就delete,数组就spliceOne。其中这个spliceOne性能比Array自带的splice好很多。具体benchmark请自行搜索</p>
 <figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function spliceOne(list, <span class="keyword">index</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (; <span class="keyword">index</span> + <span class="number">1</span> &lt; list.<span class="built_in">length</span>; <span class="keyword">index</span>++)</span><br><span class="line">    list[<span class="keyword">index</span>] = list[<span class="keyword">index</span> + <span class="number">1</span>];</span><br><span class="line">  list.pop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>##结尾<br>events是Node.js的核心模块，Stream就是给予events实现的，其他很多模块又是基于Stream实现的，源码也比较简单，很容易理解，直接阅读源码也不会人云亦云地回答问题，对整个Node.js生态有了更好的理解。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>events是Node.js的核心模块，Stream就是给予events实现的，其他很多模块又是基于Stream实现的，源码也比较简单，很容易理解，直接阅读源码也不会人云亦云地回答问题，对整个Node.js生态有了更好的理解。</p>
 
     
   </div>
@@ -165,15 +167,6 @@
    
 
    
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/09/05/resume/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="hide pull-right" href="/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
 
 
 
@@ -183,10 +176,6 @@
    
 </div>
 
-
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
 
 
