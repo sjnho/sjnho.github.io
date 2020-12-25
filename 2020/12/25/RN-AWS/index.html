@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native 使用AWS SDK v3 上传图片报not implemented | sjn_hoho&#39;blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="React Native,S3," />
+  
+
+  <meta name="description" content="##问题因为公司业务包含国外服务，所以需要用到Aws S3 来存放图片。但因为服务端上传图片，需要经历前端先传到后端，后端再上传S3,对服务端的性能要求很高，当同时N张图片上传S3的时候，服务端非常吃内存。所以想要直接前端上传S3。我们有一个客户端是用RN做的，本以为直接使用@aws-sdk/client-s3就可以，因为该sdk文档表述是支持RN的。但接入后发现报Error not implem">
+<meta name="keywords" content="React Native,S3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 使用AWS SDK v3 上传图片报not implemented">
+<meta property="og:url" content="http://yoursite.com/2020/12/25/RN-AWS/index.html">
+<meta property="og:site_name" content="sjn_hoho&#39;blog">
+<meta property="og:description" content="##问题因为公司业务包含国外服务，所以需要用到Aws S3 来存放图片。但因为服务端上传图片，需要经历前端先传到后端，后端再上传S3,对服务端的性能要求很高，当同时N张图片上传S3的时候，服务端非常吃内存。所以想要直接前端上传S3。我们有一个客户端是用RN做的，本以为直接使用@aws-sdk/client-s3就可以，因为该sdk文档表述是支持RN的。但接入后发现报Error not implem">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-12-25T15:19:40.943Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 使用AWS SDK v3 上传图片报not implemented">
+<meta name="twitter:description" content="##问题因为公司业务包含国外服务，所以需要用到Aws S3 来存放图片。但因为服务端上传图片，需要经历前端先传到后端，后端再上传S3,对服务端的性能要求很高，当同时N张图片上传S3的时候，服务端非常吃内存。所以想要直接前端上传S3。我们有一个客户端是用RN做的，本以为直接使用@aws-sdk/client-s3就可以，因为该sdk文档表述是支持RN的。但接入后发现报Error not implem">
+
+  
+
+  
+    <link rel="icon" href="/images/avatar.jpg">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-RN-AWS" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">React Native 使用AWS SDK v3 上传图片报not implemented</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.12.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>sjn_hoho</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>##问题<br>因为公司业务包含国外服务，所以需要用到Aws S3 来存放图片。但因为服务端上传图片，需要经历前端先传到后端，后端再上传S3,对服务端的性能要求很高，当同时N张图片上传S3的时候，服务端非常吃内存。所以想要直接前端上传S3。我们有一个客户端是用RN做的，本以为直接使用<code>@aws-sdk/client-s3</code>就可以，因为该sdk文档表述是支持RN的。但接入后发现报<code>Error not implemented</code></p>
+<p>##原因<br>断点调试并查询了一些资料，发现原因是因为RN自己实现了URL对象，它的版本中URL对象读取hostname等属性都会<code>throw new Error(&#39;not implemented&#39;)</code><a href="https://github.com/facebook/react-native/blob/master/Libraries/Blob/URL.js#L159" target="_blank" rel="noopener">对应源码链接</a><br>但是在<code>@aws-sdk/client-s3</code>会直接使用URL对象来生成对应region的S3地址。所以就报错了。</p>
+<p>##解决方案<br>解决也很简单。只要RN环境下引入一个Url的polyfill就OK了。我们使用的是<a href="https://github.com/charpeni/react-native-url-polyfill" target="_blank" rel="noopener">react-native-url-polyfill</a><br>用法很简单，然后我们就成功了。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+
+   
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
